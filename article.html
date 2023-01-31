@@ -61,6 +61,9 @@
             content.value = item.content;
             reg_name.value = item.reg_name;
             reg_dt.value = item.reg_dt;
+            let viewCnt = item.viewCnt ?? 0;
+            viewCnt++;
+            articleStorage.update(uuid, { viewCnt });
         }
 
         function save() {
@@ -74,6 +77,7 @@
                 articleStorage.update(uuid, item);
                 alert('수정하였습니다.');
             } else {
+                item.viewCnt = 0;
                 articleStorage.add(item);
                 alert('추가하였습니다.');
             }
