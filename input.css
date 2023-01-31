@@ -1,0 +1,19 @@
+textarea {
+    resize: vertical;
+}
+
+.input-group {
+    margin-top: 8px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    color: #555;
+}
+
+input,
+textarea {
+    padding: 6px 10px;
+}

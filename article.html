@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h1>게시글</h1>
+        <div class="row jc-between action-bar">
+            <div>
+                <button onclick="location.href='index.html'">목록으로</button>
+            </div>
+            <div>
+                <button onclick="remove()">삭제</button>
+                <button onclick="save()">저장</button>
+            </div>
+        </div>
+        <div class="input-group">
+            <label>제목</label>
+            <input type="text" id="title" class="full">
+        </div>
+        <div class="input-group">
+            <label>내용</label>
+            <textarea id="content" class="full"></textarea>
+        </div>
+        <div class="input-group">
+            <label>작성자</label>
+            <input type="text" id="reg_name">
+        </div>
+        <div class="input-group">
+            <label>작성일</label>
+            <input type="date" id="reg_dt">
+        </div>
+        <div class="row jc-end">
+            <button onclick="save()">저장</button>
+        </div>
+    </main>
+    <script src="./storage.js"></script>
+    <script>
+        const title = document.getElementById('title');
+        const content = document.getElementById('content');
+        const reg_name = document.getElementById('reg_name');
+        const reg_dt = document.getElementById('reg_dt');
+
+        const articleStorage = new Storage('articles');
+
+        const isEditMode = !!location.hash;
+
+        let uuid;
+
+        if (isEditMode) {
+            uuid = location.hash.substring(1);
+        }
+
+        if (isEditMode) {
+            const item = articleStorage.get(uuid);
+            title.value = item.title;
+            content.value = item.content;
+            reg_name.value = item.reg_name;
+            reg_dt.value = item.reg_dt;
+        }
+
+        function save() {
+            const item = {
+                title: title.value,
+                content: content.value,
+                reg_name: reg_name.value,
+                reg_dt: reg_dt.value
+            };
+            if (isEditMode) {
+                articleStorage.update(uuid, item);
+                alert('수정하였습니다.');
+            } else {
+                articleStorage.add(item);
+                alert('추가하였습니다.');
+            }
+        }
+
+        function remove() {
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                articleStorage.remove(uuid);
+                location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+@import url(./flex.css);
+@import url(./table.css);
+@import url(./input.css);
+
+html {
+    background-color: #eee;
+}
+
+body {
+    margin: 1rem;
+    font-size: 14px;
+}
+
+/* font */
+body,
+input,
+select,
+textarea,
+pre {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 20px;
+}
+
+main {
+    max-width: 50rem;
+    margin: 0 auto;
+    background-color: white;
+    padding: 1rem;
+}
+
+.action-bar {
+    margin-bottom: 1rem;
+}
+
+/* utils */
+.full {
+    width: 100%;
+}

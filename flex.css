@@ -1,0 +1,14 @@
+.row {
+    display: flex;
+}
+
+/* jc */
+.jc-end {
+    justify-content: flex-end;
+}
+
+.jc-between {
+    justify-content: space-between
+}
+
+/* ai */
