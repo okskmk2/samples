@@ -1,0 +1,33 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파일애플 | 입장</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        main {
+            max-width: 20rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>입장</h1>
+        <div class="input-group">
+            <label>이름</label>
+            <input type="text" id="user_name" class="full">
+        </div>
+        <div style="margin-top:1rem">
+            <button class="full large" onclick="login()">접속</button>
+        </div>
+    </main>
+    <script>
+        const user_name = document.getElementById('user_name');
+        function login() {
+            localStorage.setItem('user_name', user_name.value);
+            location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

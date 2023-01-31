@@ -7,8 +7,16 @@
     justify-content: flex-end;
 }
 
+.jc-center {
+    justify-content: center;
+}
+
 .jc-between {
     justify-content: space-between
 }
 
 /* ai */
+
+.ai-center {
+    align-items: center;
+}

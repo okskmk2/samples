@@ -17,3 +17,8 @@ input,
 textarea {
     padding: 6px 10px;
 }
+
+button.large {
+    padding: 6px 10px;
+    font-size: 14px;
+}

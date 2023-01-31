@@ -45,6 +45,8 @@
         const reg_name = document.getElementById('reg_name');
         const reg_dt = document.getElementById('reg_dt');
 
+
+
         const articleStorage = new Storage('articles');
 
         const isEditMode = !!location.hash;
@@ -64,6 +66,10 @@
             let viewCnt = item.viewCnt ?? 0;
             viewCnt++;
             articleStorage.update(uuid, { viewCnt });
+        } else {
+            let user_name = localStorage.getItem('user_name');
+            reg_dt.valueAsDate = new Date();
+            reg_name.value = user_name ?? null;
         }
 
         function save() {
