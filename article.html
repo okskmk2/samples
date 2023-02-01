@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>파인애플 | 게시글</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
     <main>
@@ -33,7 +33,7 @@
         <div class="input-group">
             <label>작성일</label>
             <input type="date" id="reg_dt">
-        </div>       
+        </div>
     </main>
     <script type="module">
         import { Storage } from "./firebase/db.js";
@@ -75,7 +75,7 @@
             reg_name.value = user_name ?? null;
         }
 
-        function save() {
+        async function save() {
             const item = {
                 title: title.value || '무제',
                 content: content.value,
@@ -92,9 +92,9 @@
             }
         }
 
-        function remove() {
+        async function remove() {
             if (confirm('정말로 삭제하시겠습니까?')) {
-                articleStorage.remove(uuid);
+                await articleStorage.remove(uuid);
                 location.href = 'index.html';
             }
         }
