@@ -16,7 +16,7 @@
         <div class="row jc-end ai-center" style="gap:12px">
             <span id="user_name"></span>
             <button onclick="location.href='login.html'" id="loginBtn">로그인</button>
-            <button onclick="logout()" id="logoutBtn">로그아웃</button>
+            <button id="logoutBtn">로그아웃</button>
         </div>
         <h1>게시판</h1>
         <div class="row jc-end action-bar">
@@ -36,8 +36,11 @@
     </main>
     <script src="./storage.js"></script>
     <script src="./utils.js"></script>
-    <script>
+    <script type="module">
+        import { Storage } from "./firebase/db.js";
+
         const articleStorage = new Storage('articles');
+
         const boardTable = document.getElementById('board');
         const $user_name = document.getElementById('user_name');
         const loginBtn = document.getElementById('loginBtn');
@@ -56,18 +59,24 @@
             }
         }
 
-        renderTable(boardTable, {
-            headers: ['title', 'reg_name', 'reg_dt', 'viewCnt'],
-            data: articleStorage.data
-        })
-
         function logout() {
             localStorage.removeItem('user_name');
             user_name = null;
             renderUserNav();
         }
 
-        renderUserNav();
+        logoutBtn.addEventListener('click', logout);
+
+        async function onMounted() {
+            renderUserNav();
+            const articles = await articleStorage.getAll();
+            renderTable(boardTable, {
+                headers: ['title', 'reg_name', 'reg_dt', 'viewCnt'],
+                data: articles
+            })
+        }
+
+        onMounted();
     </script>
 </body>
 </html>

@@ -14,8 +14,8 @@
                 <button onclick="location.href='index.html'">목록으로</button>
             </div>
             <div>
-                <button onclick="remove()">삭제</button>
-                <button onclick="save()">저장</button>
+                <button id="removeBtn">삭제</button>
+                <button id="saveBtn">저장</button>
             </div>
         </div>
         <div class="input-group">
@@ -24,7 +24,7 @@
         </div>
         <div class="input-group">
             <label>내용</label>
-            <textarea id="content" class="full"></textarea>
+            <textarea id="content" class="full" rows="5"></textarea>
         </div>
         <div class="input-group">
             <label>작성자</label>
@@ -33,21 +33,20 @@
         <div class="input-group">
             <label>작성일</label>
             <input type="date" id="reg_dt">
-        </div>
-        <div class="row jc-end">
-            <button onclick="save()">저장</button>
-        </div>
+        </div>       
     </main>
-    <script src="./storage.js"></script>
-    <script>
+    <script type="module">
+        import { Storage } from "./firebase/db.js";
+
+        const articleStorage = new Storage('articles');
+
+        const removeBtn = document.getElementById('removeBtn');
+        const saveBtn = document.getElementById('saveBtn');
+
         const title = document.getElementById('title');
         const content = document.getElementById('content');
         const reg_name = document.getElementById('reg_name');
         const reg_dt = document.getElementById('reg_dt');
-
-
-
-        const articleStorage = new Storage('articles');
 
         const isEditMode = !!location.hash;
 
@@ -57,16 +56,20 @@
             uuid = location.hash.substring(1);
         }
 
+        // 편집 모드
         if (isEditMode) {
-            const item = articleStorage.get(uuid);
-            title.value = item.title;
-            content.value = item.content;
-            reg_name.value = item.reg_name;
-            reg_dt.value = item.reg_dt;
-            let viewCnt = item.viewCnt ?? 0;
-            viewCnt++;
-            articleStorage.update(uuid, { viewCnt });
-        } else {
+            articleStorage.get(uuid).then(item => {
+                title.value = item.title;
+                content.value = item.content;
+                reg_name.value = item.reg_name;
+                reg_dt.value = item.reg_dt;
+                let viewCnt = item.viewCnt ?? 0;
+                viewCnt++;
+                articleStorage.update(uuid, { viewCnt });
+            });
+        }
+        // 추가 모드
+        else {
             let user_name = localStorage.getItem('user_name');
             reg_dt.valueAsDate = new Date();
             reg_name.value = user_name ?? null;
@@ -74,7 +77,7 @@
 
         function save() {
             const item = {
-                title: title.value,
+                title: title.value || '무제',
                 content: content.value,
                 reg_name: reg_name.value,
                 reg_dt: reg_dt.value
@@ -95,6 +98,9 @@
                 location.href = 'index.html';
             }
         }
+
+        saveBtn.addEventListener('click', save);
+        removeBtn.addEventListener('click', remove);
     </script>
 </body>
 </html>
