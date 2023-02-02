@@ -18,6 +18,11 @@ textarea {
     padding: 6px 10px;
 }
 
+:where(input, textarea, select):read-only {
+    border-color: transparent;
+    outline: none;
+}
+
 button.large {
     padding: 6px 10px;
     font-size: 14px;

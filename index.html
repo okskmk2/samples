@@ -15,9 +15,9 @@
     <main>
         <div class="row jc-end ai-center" style="gap:12px">
             <span id="user_name"></span>
-            <button onclick="location.href='login.html'" id="loginBtn">로그인</button>
-            <button id="logoutBtn">로그아웃</button>
-            <button id="signUpBtn">회원가입</button>
+            <button onclick="location.href='login.html'" id="loginBtn" style="display: none;">로그인</button>
+            <button id="logoutBtn" style="display: none;">로그아웃</button>
+            <button id="signUpBtn" style="display: none;">회원가입</button>
         </div>
         <h1>게시판</h1>
         <div class="row jc-end action-bar">
@@ -59,8 +59,8 @@
                 writeBtn.disabled = false;
             } else {
                 $user_name.innerHTML = null;
-                logoutBtn.style.display = 'none';
                 loginBtn.style.display = '';
+                logoutBtn.style.display = 'none';
                 signUpBtn.style.display = '';
                 writeBtn.disabled = true;
             }

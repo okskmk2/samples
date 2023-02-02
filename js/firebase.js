@@ -21,7 +21,7 @@ function getCurrentUser() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 resolve({
-                    email: user.email, displayName: user.displayName
+                    email: user.email, displayName: user.displayName, uid: user.uid
                 });
             } else {
                 reject();

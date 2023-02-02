@@ -14,25 +14,25 @@
                 <button onclick="location.href='index.html'">목록으로</button>
             </div>
             <div>
-                <button id="removeBtn">삭제</button>
-                <button id="saveBtn">저장</button>
+                <button id="removeBtn" style="display: none;">삭제</button>
+                <button id="saveBtn" style="display: none;">저장</button>
             </div>
         </div>
         <div class="input-group">
             <label>제목</label>
-            <input type="text" id="title" class="full">
+            <input type="text" id="title" class="full" readonly>
         </div>
         <div class="input-group">
             <label>내용</label>
-            <textarea id="content" class="full" rows="5"></textarea>
+            <textarea id="content" class="full" rows="5" readonly></textarea>
         </div>
         <div class="input-group">
             <label>작성자</label>
-            <input type="text" id="reg_name">
+            <input type="text" id="reg_name" readonly>
         </div>
         <div class="input-group">
             <label>작성일</label>
-            <input type="date" id="reg_dt">
+            <input type="date" id="reg_dt" readonly>
         </div>
     </main>
     <script type="module">
@@ -48,42 +48,53 @@
 
         const isEditMode = !!location.hash;
 
+        let user;
         let uuid;
 
         if (isEditMode) {
             uuid = location.hash.substring(1);
         }
 
-        // 편집 모드
-        if (isEditMode) {
-            articleStorage.get(uuid).then(item => {
-                title.value = item.title;
-                content.value = item.content;
-                reg_name.value = item.reg_name;
-                reg_dt.value = item.reg_dt;
-                let viewCnt = item.viewCnt ?? 0;
-                viewCnt++;
-                articleStorage.update(uuid, { viewCnt });
-            });
-        }
-        // 추가 모드
-        else {
-            getCurrentUser().then((user) => {
+
+
+        function setArticle() {
+            // 편집 모드
+            if (isEditMode) {
+                articleStorage.get(uuid).then(item => {
+                    title.value = item.title;
+                    content.value = item.content;
+                    reg_name.value = item.reg_name;
+                    reg_dt.value = item.reg_dt;
+                    let viewCnt = item.viewCnt ?? 0;
+                    viewCnt++;
+                    articleStorage.update(uuid, { viewCnt });
+
+                    // 작성자 일치
+                    if (user && user.uid === item.reg_id) {
+                        saveBtn.style.display = '';
+                        removeBtn.style.display = '';
+                        title.readOnly = false;
+                        content.readOnly = false;
+                        reg_name.readOnly = false;
+                        reg_dt.readOnly = false;
+                    }
+                });
+            }
+            // 추가 모드
+            else {
                 reg_name.value = user.displayName ?? user.email;
                 reg_dt.valueAsDate = new Date();
-            }).catch(() => {
-                alert('회원만 접근할 수 있는 페이지입니다.');
-                location.href = 'login.html?redirect=' + encodeURIComponent('article.html');
-            })
-
+            }
         }
+
 
         async function save() {
             const item = {
                 title: title.value || '무제',
                 content: content.value,
                 reg_name: reg_name.value,
-                reg_dt: reg_dt.value
+                reg_dt: reg_dt.value,
+                reg_id: user.uid
             };
             if (isEditMode) {
                 articleStorage.update(uuid, item);
@@ -102,8 +113,21 @@
             }
         }
 
+        async function onMounted() {
+            getCurrentUser().then((u) => {
+                user = u;
+            }).catch(() => {
+                alert('회원만 접근할 수 있는 페이지입니다.');
+                location.href = 'login.html?redirect=' + encodeURIComponent('article.html');
+            }).finally(() => {
+                setArticle();
+            });
+        }
+
         saveBtn.addEventListener('click', save);
         removeBtn.addEventListener('click', remove);
+
+        onMounted();
     </script>
 </body>
 </html>
