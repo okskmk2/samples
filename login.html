@@ -28,15 +28,16 @@
     </main>
     <script type="module">
         import { firebaseSignIn } from "./js/firebase.js";
+        
         const user_id = document.getElementById('user_id');
         const user_pwd = document.getElementById('user_pwd');
         const loginBtn = document.getElementById('loginBtn');
+
         function login() {
             firebaseSignIn(user_id.value, user_pwd.value).then((user) => {
                 location.href = 'index.html';
             });
         }
-
 
         function enter(e) {
             if (e.key === 'Enter') {

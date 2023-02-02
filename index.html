@@ -21,7 +21,7 @@
         </div>
         <h1>게시판</h1>
         <div class="row jc-end action-bar">
-            <button onclick="location.href='article.html'">글쓰기</button>
+            <button onclick="location.href='article.html'" id="writeBtn">글쓰기</button>
         </div>
         <table>
             <thead>
@@ -46,27 +46,30 @@
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const signUpBtn = document.getElementById('signUpBtn');
+        const writeBtn = document.getElementById('writeBtn');
 
         let user_name = localStorage.getItem('user_name');
 
-        function renderUserNav() {
+        function renderByUser() {
             if (user_name) {
                 $user_name.innerHTML = user_name;
                 loginBtn.style.display = 'none';
                 logoutBtn.style.display = '';
                 signUpBtn.style.display = 'none';
+                writeBtn.disabled = false;
             } else {
                 $user_name.innerHTML = null;
                 logoutBtn.style.display = 'none';
                 loginBtn.style.display = '';
                 signUpBtn.style.display = '';
+                writeBtn.disabled = true;
             }
         }
 
         function logout() {
             firebaseSignOut().then(() => {
                 user_name = null;
-                renderUserNav();
+                renderByUser();
             })
         }
 
@@ -80,7 +83,7 @@
             }).catch(e => {
                 user_name = null;
             }).finally(() => {
-                renderUserNav();
+                renderByUser();
             });
 
             const articles = await articleStorage.getAll();

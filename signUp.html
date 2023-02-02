@@ -68,7 +68,7 @@
             // signUpByFirebase
             firebaseSignUp(user_id.value, user_pwd.value, {
                 displayName: user_name.value
-            }).then((user) => {
+            }).then(() => {
                 location.href = 'index.html';
             }).catch(e => {
                 if (e.message.indexOf('auth/email-already-in-use') > -1) {
