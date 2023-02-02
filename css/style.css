@@ -35,6 +35,12 @@ main {
     margin-bottom: 1rem;
 }
 
+.auth-nav {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+}
+
 /* utils */
 .full {
     width: 100%;

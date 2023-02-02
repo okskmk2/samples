@@ -25,17 +25,22 @@
         <div style="margin-top:1rem">
             <button class="full large" id="loginBtn">로그인</button>
         </div>
+        <div class="auth-nav">
+            <a href="index.html">홈으로</a>
+            <a href="signUp.html">회원가입</a>
+        </div>
     </main>
     <script type="module">
         import { firebaseSignIn } from "./js/firebase.js";
-        
+
         const user_id = document.getElementById('user_id');
         const user_pwd = document.getElementById('user_pwd');
         const loginBtn = document.getElementById('loginBtn');
+        const redirect = new URLSearchParams(location.search).get('redirect');
 
         function login() {
             firebaseSignIn(user_id.value, user_pwd.value).then((user) => {
-                location.href = 'index.html';
+                location.href = redirect ?? 'index.html';
             });
         }
 

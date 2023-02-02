@@ -70,8 +70,11 @@
         else {
             getCurrentUser().then((user) => {
                 reg_name.value = user.displayName ?? user.email;
+                reg_dt.valueAsDate = new Date();
+            }).catch(() => {
+                alert('회원만 접근할 수 있는 페이지입니다.');
+                location.href = 'login.html?redirect=' + encodeURIComponent('article.html');
             })
-            reg_dt.valueAsDate = new Date();
 
         }
 
