@@ -16,19 +16,19 @@
         <h1>로그인</h1>
         <div class="input-group">
             <label>아이디(이메일)</label>
-            <input type="text" id="user_id" class="full">
+            <input type="email" id="user_id" class="full" required>
         </div>
         <div class="input-group">
             <label>비밀번호</label>
-            <input type="password" id="user_pwd" class="full">
+            <input type="password" id="user_pwd" class="full" required>
         </div>
         <div class="input-group">
             <label>비밀번호확인</label>
-            <input type="password" id="user_pwd_confirm" class="full">
+            <input type="password" id="user_pwd_confirm" class="full" required>
         </div>
         <div class="input-group">
             <label>이름</label>
-            <input type="text" id="user_name" class="full">
+            <input type="text" id="user_name" class="full" required>
         </div>
         <div style="margin-top:1rem">
             <button class="full large" id="signUpBtn">회원가입</button>
@@ -44,12 +44,43 @@
         const signUpBtn = document.getElementById('signUpBtn');
 
         function signUp() {
+            if (!user_id.value) {
+                alert('아이디가 존재하지 않습니다.')
+                return;
+            }
+
+            // validate password
+            if (!user_pwd.value && !user_pwd_confirm.value) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
+            if (user_pwd.value !== user_pwd_confirm.value) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if (!user_name.value) {
+                alert('이름이 존재하지 않습니다.')
+                return;
+            }
+
+            // signUpByFirebase
             firebaseSignUp(user_id.value, user_pwd.value, {
                 displayName: user_name.value
             }).then((user) => {
-                console.log(user);
                 location.href = 'index.html';
-            });
+            }).catch(e => {
+                if (e.message.indexOf('auth/email-already-in-use') > -1) {
+                    alert('중복된 아이디(이메일)입니다.');
+                    user_id.focus();
+                } else if (e.message.indexOf('auth/weak-password') > -1) {
+                    alert('비밀번호는 6글자 이상이어야합니다.');
+                    user_pwd.focus();
+                } else {
+                    alert(e.message);
+                }
+            })
         }
 
 

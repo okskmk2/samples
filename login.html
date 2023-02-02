@@ -20,7 +20,7 @@
         </div>
         <div class="input-group">
             <label>비밀번호</label>
-            <input type="text" id="user_pwd" class="full">
+            <input type="password" id="user_pwd" class="full">
         </div>
         <div style="margin-top:1rem">
             <button class="full large" id="loginBtn">로그인</button>
@@ -33,7 +33,6 @@
         const loginBtn = document.getElementById('loginBtn');
         function login() {
             firebaseSignIn(user_id.value, user_pwd.value).then((user) => {
-                console.log(user);
                 location.href = 'index.html';
             });
         }

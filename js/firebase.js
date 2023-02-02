@@ -77,7 +77,7 @@ async function firebaseSignIn(email, password) {
 }
 
 async function firebaseSignUp(email, password, profile) {
-    await createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password);
     const { displayName, photoURL } = profile;
     await updateProfile(auth.currentUser, { displayName, photoURL });
 }
