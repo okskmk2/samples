@@ -2,7 +2,7 @@
  * @param {HTMLElement} table 
  * @param {{headers: string[], data: object[]}} config 
  */
-function renderTable(table, config) {
+export function renderTable(table, config) {
     const { headers, data } = config;
     for (const item of data) {
         const tr = document.createElement('tr');

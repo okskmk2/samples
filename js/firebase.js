@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 import { collection, getDocs, getDoc, getFirestore, doc, setDoc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js'
 
 const firebaseConfig = {
     apiKey: "AIzaSyArnCVV0YwLNFEyRGiUUcgjirmIxogKsjY",
@@ -13,6 +14,23 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+function getCurrentUser() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                resolve({
+                    email: user.email, displayName: user.displayName
+                });
+            } else {
+                reject();
+            }
+        });
+    });
+}
+
+
 
 class Storage {
     constructor(storeName) {
@@ -48,8 +66,27 @@ class Storage {
         return await deleteDoc(doc(db, this.storeName, uuid));
     }
 }
+/**
+ * 
+ * @param {string} email 
+ * @param {string} password 
+ */
+async function firebaseSignIn(email, password) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;;
+}
+
+async function firebaseSignUp(email, password, profile) {
+    await createUserWithEmailAndPassword(auth, email, password)
+    const { displayName, photoURL } = profile;
+    await updateProfile(auth.currentUser, { displayName, photoURL });
+}
+
+function firebaseSignOut() {
+    return signOut(auth);
+}
 
 
 export {
-    Storage
+    Storage, firebaseSignIn, getCurrentUser, firebaseSignOut, firebaseSignUp
 }

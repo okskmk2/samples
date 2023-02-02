@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>파인애플 | 게시글</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <main>
@@ -36,7 +36,7 @@
         </div>
     </main>
     <script type="module">
-        import { Storage } from "./firebase/db.js";
+        import { Storage, getCurrentUser } from "./js/firebase.js";
 
         const articleStorage = new Storage('articles');
 
@@ -70,9 +70,11 @@
         }
         // 추가 모드
         else {
-            let user_name = localStorage.getItem('user_name');
+            getCurrentUser().then((user) => {
+                reg_name.value = user.displayName ?? user.email;
+            })
             reg_dt.valueAsDate = new Date();
-            reg_name.value = user_name ?? null;
+
         }
 
         async function save() {

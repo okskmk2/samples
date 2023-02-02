@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일애플 | 로그인</title>
+    <title>파일애플 | 회원가입</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         main {
@@ -20,19 +20,33 @@
         </div>
         <div class="input-group">
             <label>비밀번호</label>
-            <input type="text" id="user_pwd" class="full">
+            <input type="password" id="user_pwd" class="full">
+        </div>
+        <div class="input-group">
+            <label>비밀번호확인</label>
+            <input type="password" id="user_pwd_confirm" class="full">
+        </div>
+        <div class="input-group">
+            <label>이름</label>
+            <input type="text" id="user_name" class="full">
         </div>
         <div style="margin-top:1rem">
-            <button class="full large" id="loginBtn">로그인</button>
+            <button class="full large" id="signUpBtn">회원가입</button>
         </div>
     </main>
     <script type="module">
-        import { firebaseSignIn } from "./js/firebase.js";
+        import { firebaseSignUp } from "./js/firebase.js";
         const user_id = document.getElementById('user_id');
         const user_pwd = document.getElementById('user_pwd');
-        const loginBtn = document.getElementById('loginBtn');
-        function login() {
-            firebaseSignIn(user_id.value, user_pwd.value).then((user) => {
+        const user_pwd_confirm = document.getElementById('user_pwd_confirm');
+        const user_name = document.getElementById('user_name');
+
+        const signUpBtn = document.getElementById('signUpBtn');
+
+        function signUp() {
+            firebaseSignUp(user_id.value, user_pwd.value, {
+                displayName: user_name.value
+            }).then((user) => {
                 console.log(user);
                 location.href = 'index.html';
             });
@@ -41,11 +55,12 @@
 
         function enter(e) {
             if (e.key === 'Enter') {
-                login();
+                signUp();
             }
         }
 
-        loginBtn.addEventListener('click', login);
+        signUpBtn.addEventListener('click', signUp);
+
         user_pwd.addEventListener('keyup', enter);
     </script>
 </body>
