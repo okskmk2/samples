@@ -82,8 +82,11 @@
             }
             // 추가 모드
             else {
+                title.readOnly = false;
+                content.readOnly = false;
                 reg_name.value = user.displayName ?? user.email;
                 reg_dt.valueAsDate = new Date();
+                saveBtn.style.display = '';
             }
         }
 
