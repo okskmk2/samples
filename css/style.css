@@ -9,6 +9,7 @@ html {
 body {
     margin: 1rem;
     font-size: 14px;
+    min-width: 360px;
 }
 
 /* font */
@@ -28,7 +29,7 @@ main {
     max-width: 50rem;
     margin: 0 auto;
     background-color: white;
-    padding: 1rem;
+    padding: 2rem 3rem;
 }
 
 .action-bar {
@@ -44,4 +45,15 @@ main {
 /* utils */
 .full {
     width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        margin: 0;
+    }
+
+    main {
+        width: auto;
+        padding: 1rem;
+    }
 }
